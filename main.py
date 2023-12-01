@@ -16,7 +16,7 @@ from shared_flow import handle_sso_token_response
 
 def main():
 
-	random = base64.urlsafe_b64encode(secrets.token_bytes(32)) #создали 32 случайных байта  
+	random = base64.urlsafe_b64encode(secrets.token_bytes(32)) 
 	m = hashlib.sha256()
 	m.update(random)
 	d = m.digest()
@@ -27,7 +27,6 @@ def main():
 	url = print_auth_url(client_id, code_challenge=code_challenge)
 
 	print(f'\nВаша ссылка для авторизации:\n {url}')
-	#input('Нажмите любую клавишу после авторизации')
 	
 	auth_code = input('\n\nПройдите авторизацию, после чего вас перебросит на новую страницу. Откройте строку с ссылкой и скопируйте значение после code=<букафки и циферки> до знака "&" \n**ПРИМЕР** То, что вам нужно скопировать выделено жирным: https: //localhost:5000/callback/?code=**1o-L5VR030uIdvIBFjILAw**&state=qwery \n\n Ваш код: ')
 	

@@ -1,6 +1,14 @@
 import requests
 import json
+import sqlite3
 
+db = sqlite3.connect('char.db')
+cur = db.cursor()
+
+cur.execute('''CREATE TABLE IF NOT EXISTS users (
+	characters INT
+)''')
+db.commit()
 
 def partition(l, n=None):
 		for i in range(0, len(l), n):
@@ -40,15 +48,15 @@ def char_list():
 		print('Получение ID корпораций: ', res_corp.status_code)
 	
 		id_corp = json.loads(res_corp.text)
-
 		for i in id_corp:
 			if i['corporation_id'] in new_corp:
-				char_id_corp.append(i['character_id'])
+	
+				res = cur.execute('SELECT * FROM users WHERE characters=?', (i['character_id'],))
+				if res.fetchone() is None:
+					char_id_corp.append(i['character_id'])
+					
 
 	print('Подходящих персонажей:', len(char_id_corp))
-
-	#char_id_corp = list(partition(char_id_corp, n=49))
-	#print('Блоков по 49 персонажей:', len(char_id_corp))
 	return char_id_corp
 
 
